@@ -1,0 +1,63 @@
+<% title "Display #{@admin.email} profile" %>
+
+<h3>Admin details</h3>
+<table class="table">
+  <tr>
+    <td><b>ID</b></td>
+    <td><%= @admin.id %></td>
+  </tr>
+  <tr>
+    <td><b>Email Address</b></td>
+    <td><%= @admin.email %><small>&nbsp;<%= link_to 'Change email address', edit_admins_admin_path(@admin, :field => "email"), :remote => true %></td>
+  </tr>
+  <tr>
+    <td><b>Password</b></td>
+    <td>******<small>&nbsp;<%= link_to 'Change password', edit_admins_admin_path(@admin, :field => "password"), :remote => true %></small></td>
+  </tr>
+  <tr>
+    <td><b>Sign in count</b></td>
+    <td><%= @admin.sign_in_count %></td>
+  </tr>
+  <tr>
+    <td><b>Current sign in at</b></td>
+    <td><%= @admin.current_sign_in_at.to_s(:long) unless @admin.current_sign_in_at.nil? %></td>
+  </tr>
+  <tr>
+    <td><b>Current sign in ip</b></td>
+    <td><%= blank_or_not @admin.current_sign_in_ip %></td>
+  </tr>
+  <tr>
+    <td><b>Failed attempts</b></td>
+    <td><%= @admin.failed_attempts %></td>
+  </tr>
+  <tr>
+    <td><b>Unlock token</b></td>
+    <td><%= blank_or_not @admin.unlock_token %></td>
+  </tr>
+  <tr>
+    <td><b>Last sign in at</b></td>
+    <td><%= @admin.last_sign_in_at.to_s(:long) unless @admin.last_sign_in_at.nil? %></td>
+  </tr>
+  <tr>
+    <td><b>Locked at</b></td>
+    <td><%= blank_or_not @admin.locked_at %></td>
+  </tr>
+  <tr>
+    <td><b>Last sign in ip</b></td>
+    <td><%= blank_or_not @admin.last_sign_in_ip %></td>
+  </tr>
+  <tr>
+    <td><b>Created at</b></td>
+    <td><%= @admin.created_at.to_s(:long) %></td>
+  </tr>
+  <tr>
+    <td><b>Updated at</b></td>
+    <td><%= @admin.updated_at.to_s(:long) %></td>
+  </tr>
+</table>
+
+<div class="form-actions">
+  <%= link_to 'Edit', edit_admins_admin_path(@admin), :class => 'btn btn-warning' %>
+  <%= link_to 'Delete', admins_admin_path(@admin), :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger' %>
+  <%= link_to 'View All', admins_admins_path, :class => 'btn' %>
+</div>

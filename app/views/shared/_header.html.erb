@@ -1,0 +1,171 @@
+
+  
+ <style> 
+   input[type="submit"]{
+    background: url("/assets/search.gif") 4px 0px no-repeat;
+    width: 37px;
+    height: 30px;
+    border: none;
+    float: left;
+    cursor: pointer;
+  }
+ </style>
+
+
+
+
+
+	<!--Header block start-->
+	<header>
+		<div class="content">
+			<logo> 
+                <%= link_to image_tag("logo.png", :style => "border-style: none;",:alt=>"What you rank", :title=>"What you rank"), root_path %>
+            </logo>
+			<div class="title1"><img src="/assets/title.png"></div>
+			<div class="search_outer">
+                
+                <%= form_tag page_url(:id => "search_results"), { :id => "searchbox_003944900619753220492:-qtrwkvvdtu", :method => :get, :target => "_top" } do %>
+                  <input type="hidden" name="cx" value="003944900619753220492:-qtrwkvvdtu" />
+                  <input type="hidden" name="cof" value="FORID:10" />
+                  <input id="add_list_field" name="q" type="text" placeholder="Search here..." class="input1" class="searchsitebox" autocomplete="off" />
+                  <input type="submit" value="" onMouseOut="this.src='/assets/search.gif';" onMouseOver="this.src='/assets/search_hover.gif';"></input>
+                <% end %>
+
+
+			</div>
+		</div>
+	</header>
+	<!--Header block end-->
+
+  <!--Nav block start-->
+	<nav>
+		<div class="content">
+			<nav class="ph-lift1">
+				<ul>
+                   <li class="active">
+                      <%= link_to root_path  do %><span data-title="Home">Home</span><% end %>
+                    </li>	
+
+					<li>
+                       <%= link_to users_lists_path do %><span data-title="All Lists">All Lists</span><% end %>
+					<!--<ul>
+							<li><a href="#" ><span data-title="Web design">Web design</span></a></li>
+							<li><a href="#" ><span data-title="Illustrations">Illustrations</span></a></li>
+							<li><a href="#" ><span data-title="Patterns">Patterns</span></a></li>
+						</ul>-->						
+					</li>
+					<li>
+                        <%= link_to users_lists_path(:criteria => :newest_lists) do %>
+                         <span data-title="Newest">Newest</span>
+                        <% end %>
+                    </li>
+					<li>
+                        <%= link_to new_users_list_path do %>
+                         <span data-title="Add List">Add List</span>
+                        <% end %>
+                    </li>
+					<li>
+                        <%= link_to '#' do %>
+                         <span data-title="Stats">Stats</span>
+                        <% end %>
+                    </li>
+					<li><a href="#" ><span data-title="Forum">Forum</span></a></li>
+					<li>
+                        <%= link_to new_contact_path do %>
+                         <span data-title="Contact">Contact</span>
+                        <% end %>
+                    </li>
+				</ul>
+			</nav>
+		</div>
+	</nav>
+	<!--Nav block end-->
+
+  	<!--Banner block start-->
+	<div class="banner">
+		<div class="banner_sub">
+		<!--<div class="content">
+			<img src="images/banner.png">
+		</div>-->
+		<div id="da-slider" class="da-slider">
+				<div class="da-slide">
+					<h2>What your rank?<br>Create your list now!</h2>
+					<p>Search, Share or Create<br> Your List Today!</p>
+					<a href="#" class="da-link">featured Lists</a> 
+					<a href="#" class="da-link1">Create your list!</a> 
+					<div class="da-img"><%= image_tag("2.png",:alt=>"image01")  %></div>
+				</div>
+				<div class="da-slide">
+					<h2>What your rank?<br>Create your list now!</h2>
+					<p>Search, Share or Create<br> Your List Today!</p>
+					<a href="#" class="da-link">featured Lists</a>
+					<a href="#" class="da-link1">Create your list!</a> 
+                    <div class="da-img"><%= image_tag("2.png",:alt=>"image01")  %></div>
+				</div>
+				<div class="da-slide">
+					<h2>What your rank?<br>Create your list now!</h2>
+					<p>Search, Share or Create<br> Your List Today!</p>
+					<a href="#" class="da-link">featured Lists</a>
+					<a href="#" class="da-link1">Create your list!</a> 
+					<div class="da-img"><%= image_tag("2.png",:alt=>"image01")  %></div>
+				</div>
+				
+			</div>
+        </div>
+		<script type="text/javascript">
+			$(function() {
+			
+				$('#da-slider').cslider({
+					autoplay	: true,
+					bgincrement	: 450
+				});
+			
+			});
+		</script>	
+		</div>
+	</div>
+	<!--Banner block end-->
+
+
+<!-- bottom section -->
+<!-- 
+<%# content_for :bottom do %>
+  <script type="text/javascript">
+    $(document).ready(function() {
+
+       var lists, mapped;
+       $('#add_list_field').typeahead({
+           source: function (query, process) {
+
+                $.get('/search_results/lists', { term: query }, function (data) {
+                  lists = []
+                  mapped = {}
+
+                  $.each(data, function (i, list) {
+                    mapped[list.name] = list;
+                    lists.push(list.name);
+                  })
+
+                  process(lists)
+                })
+           },
+           updater: function (list) {
+                window.location = '/users/lists/' + mapped[list].id;
+                return list;
+           },
+           matcher: function (list) {
+                if (list.toLowerCase().indexOf(this.query.trim().toLowerCase()) != -1) {
+                    return true;
+                }
+           },
+           highlighter: function (list) {
+              var regex = new RegExp( '(' + this.query + ')', 'gi' );
+              return list.replace( regex, "<strong>$1</strong>" );
+           },
+       });
+
+    });
+  </script>
+<%# end %>
+
+-->

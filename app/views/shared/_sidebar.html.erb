@@ -1,0 +1,70 @@
+
+
+       <!--block1 start-->
+		<div class="block1">
+			<h1><table  border="0" cellspacing="5" cellpadding="0">
+				  <tr>
+					<td><%= image_tag "img3.gif" %> </td>
+					<td valign="top">
+                       <%= image_tag "img4.gif" %>
+                    </td>
+				  </tr>
+				</table>
+		     </h1>
+
+
+            <div class="fbframe">
+              <!-- thetop5.com like box -->
+              <div id="fb-root"></div>
+              <script>(function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+                fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+              </script>
+              <div class="fb-like-box" data-href="http://www.facebook.com/thetop5dotcom" data-width="292" data-height="200" data-show-faces="true" data-stream="false" data-border-color="#f3f3f3" data-header="false"></div>
+              <!-- end like box -->
+
+              <!-- thetop5.com follow button -->
+              <!-- end follow button -->
+            </div>
+                    
+		     <%#= image_tag "img5.gif" %>    
+        </div>
+		<!--block1 end-->
+
+
+
+
+
+		<!--Block2 start-->
+		<table width="100%" border="0" cellspacing="5" cellpadding="5" class="block2">
+              <tr>
+                <td width="40%"><a href="#"><%= image_tag "logo2.gif" ,:align=>"right" %> </a></td>
+                <td width="11%">on</td>
+                <td width="16%"><a href="#"><%= image_tag "icon2.gif" ,:align=>"right" %> </a></td>
+                <td width="33%">
+                    <script>(function(d, s, id) {
+                        var js, fjs = d.getElementsByTagName(s)[0];
+                        if (d.getElementById(id)) return;
+                        js = d.createElement(s); js.id = id;
+                        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+                        fjs.parentNode.insertBefore(js, fjs);
+                        }(document, 'script', 'facebook-jssdk'));
+                    </script>
+                  <div class="fb-follow button1" data-href="http://www.facebook.com/thetop5dotcom" data-layout="button_count" data-show-faces="false" data-width="450"></div> </td>
+              </tr>
+            </table>
+		<!--Block2 end-->
+        <!--Block3 start-->
+         <div class="toplist">
+			  <span>Lists that are Trending!</span>
+			  <ul>
+                <% list_criterias(:trending_lists).try(:take, 5).try(:each) do |list| %>
+                  <li><%= link_to list.name, users_list_path(list) %></li>
+                <% end %>
+              </ul>
+	    </div>
+		<!--Block3 end-->

@@ -1,0 +1,163 @@
+<!-- head section -->
+<% content_for :head do %>
+  <%= stylesheet_link_tag "lists/show" %>
+  <%= javascript_include_tag 'lists/lists.js', 'lists/show.js' %>
+  <style>
+    .comments > li > blockquote:hover {
+      background-color: #eeeeee;
+      border-color: #ddd;
+    }
+  </style>
+  <script type="text/javascript">
+    $(document).ready(function() {
+        var JSONlist = gon.list;
+        var viewModel = new ListViewModel(JSONlist);
+        ko.applyBindings(viewModel,$('.maincolumn')[0]);
+    });
+  </script>
+<% end %>
+
+<!-- Modal Item Comment -->
+<div id="modalItemComment" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Thanks! Please share your opinion</h3>
+  </div>
+  <div class="modal-body">
+    <p><i>Keep in mind that comments are supposed to make a case for a particular song, team, game, etc. Negative comments and low quality comments will be removed.</i></p>
+    <p><textarea rows="4" cols="40" class="span5" data-bind="value: $root.newCommentItem" placeholder="Write your comment about this item"></textarea></p>
+  </div>
+  <div class="modal-footer">
+    <input type="hidden" data-bind="value: $root.tempListingID" />
+    <button class="btn btn-primary" data-bind="enable: $root.isEnableButton, click: $root.addCommentItem">Post Comment</button>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">No Thanks</button>
+  </div>
+</div>
+
+<div id="list" class="row" data-bind="with: list">
+  <div class="span7">
+    <!-- list information -->
+    <h3 data-bind="text: name"></h3>
+    <blockquote data-bind="text: description"></blockquote>
+    <div class="span7">
+      <i class="icon-user"></i> by <%= @list.user.profile.full_name %>
+      | <i class="icon-calendar"></i> <%= @list.created_at.strftime("%B #{@list.created_at.day.ordinalize} %Y") %>
+      | <i class="icon-tag"></i> Category : <span class="label label-info"><%= @list.category.name %></span>
+    </div>
+  </div>
+
+  <div class="span7" style="margin: 30px 0 30px 0;">
+    <!-- AddThis Button -->
+    <div class="addthis_toolbox addthis_default_style ">
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+      <a class="addthis_button_tweet"></a>
+      <a class="addthis_button_pinterest_pinit"></a>
+      <a class="addthis_counter addthis_pill_style"></a>
+    </div>
+    <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-510133021ae7f88c"></script>
+  </div>
+
+  <!-- ko if: listings_attributes().length > $root.pageSize() -->
+  <div class="span7">
+    <!-- edit button -->
+    <%= link_to 'Edit this list', edit_users_list_path(@list), :class => 'btn btn-warning' if can? :update, @list %>
+    <!-- Pagination -->
+    <div class="btn-group pull-right">
+      <button class="btn btn-primary" data-bind="enable: $root.isEnableButton, click: $root.previousPage, css: { active: $root.pageIndex() < 1 }"><i class="icon-backward icon-white"></i> Prev</button>
+      <!-- ko foreach: $root.allPages -->
+      <button class="btn btn-primary" data-bind="enable: $root.isEnableButton, text: $data.pageNumber, click: function() { $root.moveToPage($data.pageNumber-1); }, css: { active: $data.pageNumber === ($root.pageIndex() + 1) }"></button>
+      <!-- /ko -->
+      <button class="btn btn-primary" data-bind="enable: $root.isEnableButton, click: $root.nextPage, css: { active: $root.pageIndex() > 1 }">Next <i class="icon-forward icon-white"></i></button>
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <div class="span7" style="margin-top: 20px;">
+    Display <select style="width:60px;height:20px" data-bind="options: $root.pageSizeArray, value: $root.pageSize"></select> items
+    <!-- ko if: $root.current_user_id != undefined && $root.user_already_voted() == true -->
+    <div class="pull-right">Sort by <select style="width:190px;height:20px" data-bind="options: $root.filterArray, value: $root.selectedFilter"></select></div>
+    <!-- /ko -->
+  </div>
+
+  <!-- ko foreach: $root.pagedListings -->
+    <div class="span7 items-list" data-bind="css: { 'collapse-group': position() > 5 }">
+      <div class="span7" onmouseover="this.style.background='#eeeeee';" onmouseout="this.style.background='white';">
+        <!-- ko if: $root.current_user_id != undefined && $root.user_already_voted() == true -->
+        <span class="label label-info badge-points pull-right" style="margin-top:5px" data-bind="text: item_votes"></span>
+        <!-- /ko -->
+        <!-- ko if: $root.current_user_id === undefined || $root.user_already_voted() == false -->
+        <%= link_to image_tag("vote.png"), "#", :class => "pull-right", :style => "margin-top:5px", "data-bind" => "enable: $root.isEnableButton, click: $root.voteItem.bind($data)" %>
+        <!-- /ko -->
+        <h4><span class="badge" style="padding: 6px 10px;" data-bind="text: position, css: { 'badge-warning': position() <= 5 }"></span>&nbsp;&nbsp;
+          <strong>
+            <!-- ko if: position() < 5 -->
+            <a style="cursor:pointer" data-bind="text: item_attributes().name"></a>
+            <!-- /ko -->
+            <!-- ko if: position() > 5 -->
+            <a style="cursor:pointer" data-bind="text: item_attributes().name, click: $root.expandDetails, bootstrapTooltip: { placement: 'right', title: 'Click to expand or hide this item.' }"></a>
+            <!-- /ko -->
+          </strong>
+        </h4>
+      </div>
+      <div class="row" data-bind="css: { 'collapse': position() > 5 }">
+        <div class="span2">
+          <a class="thumbnail">
+            <!-- ko if: item_attributes().image() != null -->
+            <img data-bind="attr: { src: item_attributes().image }" style ="width:160px;height:120px;" />
+            <!-- /ko -->
+            <!-- ko if: item_attributes().image() == null -->
+            <%= image_tag "no-image.jpg", :style => "width:160px;height:120px;" %>
+            <!-- /ko -->
+          </a>
+        </div>
+        <div class="span5">
+          <!-- ko if: total_comments() > 0 -->
+            <ul class="comments">
+              <!-- ko foreach: comments_attributes -->
+              <li>
+                <blockquote>
+                  <p data-bind="text: content"></p>
+                  <p>
+                    <i class="icon-user"></i> by <span data-bind="text: user_full_name"></span>
+                    | <span class="label label-warning" data-bind="text: comment_votes"></span>
+                    <a href="#" rel="tooltip" class="thumbs" data-bind="enable: $root.isEnableButton, click: function(data, event) { $root.voteComment($parent.id(), 'up', data, event) }, bootstrapTooltip: { placement: 'top', title: 'thumbs up' }"><i class="icon-thumbs-up"></i></a>
+                    <a href="#" rel="tooltip" class="thumbs" data-bind="enable: $root.isEnableButton, click: function(data, event) { $root.voteComment($parent.id(), 'down', data, event) }, bootstrapTooltip: { placement: 'bottom', title: 'thumbs down' }"><i class="icon-thumbs-down"></i></a>
+                  </p>
+                </blockquote>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: total_comments() > comments_attributes().length -->
+              <li>
+                <button class="btn" data-bind="click: function(data, event) { $root.loadComments(id(), data, event) }">More comments</button>
+              </li>
+              <!-- /ko -->
+            </ul>
+          <!-- /ko -->
+        </div>
+      </div>
+      <div class="span7">
+        <p class="pull-right">
+          <i class="icon-comment"></i> <a data-bind="attr: { href: '/users/lists/' + $parent.id() + '/listings/' + id() + '/comments' }, text: total_comments() + ' comments'"></a>
+          <!-- ko if: item_attributes().total_shares() > 0 -->
+          | <i class="icon-share"></i> <a data-bind="attr: { href: '/items/' + item_attributes().id() }, text: item_attributes().total_shares() + ' shares'"></a>
+          <!-- /ko -->
+        </p>
+      </div>
+    </div>
+  <!-- /ko -->
+
+  <!-- FB comments -->
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=482813175104715";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  </script>
+  <div class="fb-comments" style="padding-top:10px;" data-href="http://<%= configatron.site_url %>/" data-width="600" data-num-posts="2"></div>
+
+  </div>
+</div>

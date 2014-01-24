@@ -1,0 +1,44 @@
+<table class="table">
+  <tr>
+    <td><b>Avatar image</b></td>
+    <td>
+      <% if @user.profile.avatar.blank? %>
+        <%= image_tag @user.gravatar_url(:size => 64) %>
+      <% else %>
+        <%= image_tag @user.profile.avatar_url(:thumb) %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td><b>Point Earnings</b></td>
+    <td><span class="badge badge-important"><%= blank_or_not @user.reputation_for(:points) %></span></td>
+  </tr>
+  <tr>
+    <td><b>First Name</b></td>
+    <td><%= blank_or_not @user.profile.first_name %></td>
+  </tr>
+  <tr>
+    <td><b>Last Name</b></td>
+    <td><%= blank_or_not @user.profile.last_name %></td>
+  </tr>
+  <tr>
+    <td><b>Birthday</b></td>
+    <td><%= blank_or_not(@user.profile.birthday).try(:strftime,'%b %e, %Y') %></td>
+  </tr>
+  <tr>
+    <td><b>Gender</b></td>
+    <td><%= @user.profile.sex.nil? ? "-" : @user.profile.sex? ? "Male" : "Female" %></td>
+  </tr>
+  <tr>
+    <td><b>City</b></td>
+    <td><%= blank_or_not @user.profile.city %></td>
+  </tr>
+  <tr>
+    <td><b>State</b></td>
+    <td><%= blank_or_not @user.profile.state %></td>
+  </tr>
+  <tr>
+    <td><b>Website</b></td>
+    <td><%= blank_or_not(@user.profile.website) { link_to @user.profile.website, @user.profile.website } %></td>
+  </tr>
+</table>

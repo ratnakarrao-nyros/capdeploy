@@ -1,0 +1,4 @@
+$('#modal-form').modal('hide');
+$('#top_menu').html('<%= escape_javascript(render :partial => "shared/top_menu") %>');
+$('#login_buttons').html('<%= escape_javascript(render :partial => "shared/login_buttons") %>');
+ajaxLoaderPnotify.stop({text: '<%= flash[:notice] %>'});

@@ -1,0 +1,63 @@
+<% title "Lists Requiring Moderation" %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "lists/moderate.js" %>
+  <script type="text/javascript">
+    $(document).ready(function() {
+
+      var viewModel = new ListModerationViewModel({
+          url: '/admins/lists',
+          scope: 'all',
+          sortBy: 'newest'
+      });
+
+      ko.applyBindings(viewModel);
+
+    });
+  </script>
+<% end %>
+
+<table class="table table-condensed table-hover">
+  <thead>
+    <tr>
+      <th colspan="5">
+        <div class="btn-group" data-toggle="buttons-radio">
+          <button class="btn active" data-bind="click: changeScope('all'), enable: isLoaded"><i class="icon-list-alt"></i> All</button>
+          <button class="btn" data-bind="click: changeScope('pending lists'), enable: isLoaded"><i class="icon-edit"></i> Pending</button>
+          <button class="btn" data-bind="click: changeScope('approved lists'), enable: isLoaded"><i class="icon-check"></i> Approved</button>
+          <button class="btn" data-bind="click: changeScope('rejected lists'), enable: isLoaded"><i class="icon-remove-sign"></i> Rejected</button>
+        </div>
+        <div class="btn-group">
+          <button data-bind="click: goToPreviousPage, enable: hasPreviousPage" class="btn btn-primary"><i class="icon-chevron-left icon-white"></i> Previous</button>
+          <button data-bind="click: goToNextPage, enable: hasNextPage" class="btn btn-primary">Next <i class="icon-chevron-right icon-white"></i></button>
+        </div>
+        <div class="input-append pull-right">
+          <input type="search" id="search_item" name="search_item" data-bind="enable: hasRecords && filter != '', value: filter, valueUpdate: 'afterkeydown'" data placeholder="Search..." autocomplete="off" />
+          <span class="add-on"><i class="icon-search"></i></span>
+        </div>
+      </th>
+    </tr>
+    <tr>
+      <th colspan="5" style="border:0">
+        <div class="progress progress-striped active">
+          <div class="bar" style="width: 100%;"></div>
+        </div>
+        <span class="span8" style="text-align:center;"><i data-bind="text: tableMessage"></i></span>
+      </th>
+    </tr>
+  </thead>
+  <tbody data-bind="foreach: lists">
+    <tr>
+      <td><strong><a data-bind="attr: { href: '/admins/lists/' + id() }, text: name"></a></strong></td>
+      <td><span class="label" data-bind="text: state, css: { 'label-info': state() == 'approved', 'label-danger': state() == 'rejected' }"></span></td>
+      <td data-bind="text: description"></td>
+      <td><strong data-bind="text: posted_at"></strong></td>
+      <td>
+        <div class="btn-group">
+          <button class="btn btn-mini btn-success" data-bind="enable: $root.hasApproved($data), click: $root.approve($data)"><i class="icon-ok icon-white"></i></button>
+          <button class="btn btn-mini btn-warning" data-bind="enable: $root.hasRejected($data), click: $root.reject($data)"><i class="icon-remove icon-white"></i></button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

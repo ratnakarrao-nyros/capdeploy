@@ -1,0 +1,21 @@
+<%= flash_notify %>
+<%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put, :id => "modal_auth_change_password" }, :remote => true) do |f| %>
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Change your password</h3>
+  </div>
+  <div class="row-fluid modal-body">
+    <div class="span6">
+      <%= f.input :reset_password_token, :as => :hidden %>
+      <%= f.input :password, :required => false, :label => false, :placeholder => "New password" %>
+      <%= f.input :password_confirmation, :required => false, :label => false, :placeholder => "Confirm your new password" %>
+    </div>
+    <div class="span5">
+      <%= render "shared/users_devise_links" %>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <%= f.button :submit, "Change my password", :class => "btn-primary" %>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+<% end %>

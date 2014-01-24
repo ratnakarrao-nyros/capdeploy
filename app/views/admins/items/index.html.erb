@@ -1,0 +1,21 @@
+<% title "List of items" %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "index_dataTables" %>
+<% end %>
+
+<table class="table table-bordered table-striped table-hover datatable" data-source="<%= admins_items_url(format: "json") %>">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+
+<div class="form-actions">
+  <%= link_to 'New item', new_admins_item_path, :class => 'btn btn-primary' %>
+</div>

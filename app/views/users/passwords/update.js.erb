@@ -1,0 +1,5 @@
+$('#modal-form').modal('hide');
+$('#top_menu').html('<%= escape_javascript(render :partial => "shared/top_menu") %>');
+$('#login_buttons').html('<%= escape_javascript(render :partial => "shared/login_buttons") %>');
+history.pushState('data', '', '<%= root_url %>');
+$.pnotify({ text: '<%= flash[:notice] %>', sticker: false, history: false, type: 'success', styling: 'bootstrap' });

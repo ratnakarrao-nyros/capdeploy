@@ -1,0 +1,76 @@
+<!-- footer -->
+
+<footer>
+
+  </div>
+		<div class="content">
+			<!--footer1 block start-->
+			<div class="footer1">
+				<h1>Support - We`re here for you!</h1>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr><td colspan="2" height="10px;"></td></tr>
+				  <tr>
+					<td><%= image_tag "icon4.gif" %> </td>
+					<td><%= secure_mail_to("mail@thetop5.com") %></td>
+				  </tr>
+				  <tr><td colspan="2" height="15px;"></td></tr>
+				  <tr>
+					<td colspan="2">Copyright &copy; 2011 The Top 5 <br>All Rights Reserved</td>
+				  </tr>
+				</table>
+
+			</div>
+			<!--footer1 block start-->
+			<!--footer2 block end-->
+			<div class="footer1">
+				<h1>Pages</h1>
+				<div class="list1">
+					<ul>
+						<li><%= link_to "Home", root_path %></li>
+                        <li><%= link_to "All lists", users_lists_path %></li>
+                        <li><%= link_to "Newest", users_lists_path(:criteria => :newest_lists) %></li>
+                        <li><%= link_to "Add list", new_users_list_path, :remote => :true %></li>
+                        <li><%= link_to "Contact", new_contact_path %></li>
+					</ul>
+					<ul>
+						<li><a href="#">Stats </a></li>
+						<li><a href="#">Chat</a></li>
+						<li><a href="#">Forum</a></li>
+						<li><a href="#">Contact</a></li>
+					</ul>
+				</div>
+			</div>
+			<!--footer2 block end-->
+			<!--footer3 block start-->
+			<div class="footer1">
+				<h1>About Us</h1>
+				<p>Lorem Ipsum is simply dummy text of thprinting and typesetting industry.  Lorem Ipsum.</p>
+				<p>And typesetting industry. Lorem Ipsum. Lorem and typesetting industry. Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing...</p>
+			</div>
+			<!--footer3 block end-->
+			<!--footer4 block start-->
+			<div class="footer2">
+				<h1>Follow Us</h1>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				  <tr><td colspan="4" height="10px;"></td></tr>
+				  <tr>
+					<td width="16%"><a href="#"><img src="/assets/facebook.png" onMouseOut="this.src='/assets/facebook.png';" onMouseOver="this.src='/assets/facebook2.png';"></a></td>
+					<td width="16%"><a href="#"><img src="/assets/twitter.png" onMouseOut="this.src='/assets/twitter.png';" onMouseOver="this.src='/assets/twitter2.png';"></a></td>
+					<td width="16%"><a href="#"><img src="/assets/google.png" onMouseOut="this.src='/assets/google.png';" onMouseOver="this.src='/assets/google2.png';"></a></td>
+					<td width="45%"><a href="#"><img src="/assets/pinterest.png" onMouseOut="this.src='/assets/pinterest.png';" onMouseOver="this.src='/assets/pinterest2.png';"></a></td>
+				  </tr>
+				  <tr><td colspan="4" height="10px;"></td></tr>
+				  <tr>
+				    <td colspan="4"><%= image_tag "logo4.gif" ,:align=>"right" %> </td>
+			      </tr>
+				</table>
+
+			</div>
+			<!--footer4 block end-->
+		</div>
+	</footer>
+	<!--Footer end-->
+    	<div class="footersub">
+     	  <div class="footersub2"> Design by <a href="http://www.ivortexmedia.com/">iVortexMedia.com</a></div>
+	    </div>
+

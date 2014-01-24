@@ -1,0 +1,7 @@
+$('#modal-form').html('<%= escape_javascript(render :partial => "form_dialog") %>');
+$('#modal-form').modal('show');
+$('#myButton').click(function() {
+   $(this).attr('disabled',true);
+   ajaxLoaderPnotify.start();
+   $(this).parents('form:first').submit();
+});

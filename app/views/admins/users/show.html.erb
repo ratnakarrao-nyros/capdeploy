@@ -1,0 +1,16 @@
+<% title "Display user #{@user.email}" %>
+
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#user-details" data-toggle="tab">User details</a></li>
+  <li><a href="#profile-details" data-toggle="tab">Profile details</a></li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="user-details"><%= render 'user_details' %></div>
+  <div class="tab-pane" id="profile-details"><%= render 'profile_details' if @user.profile %></div>
+</div>
+
+<div class="form-actions">
+  <%= link_to 'Edit', edit_admins_user_path(@user), :class => 'btn btn-warning' %>
+  <%= link_to 'View all', admins_users_path, :class => 'btn' %>
+</div>

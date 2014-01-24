@@ -1,0 +1,5 @@
+<p>Please confirm your account so you can start to vote and create lists on thetop5.com</p>
+
+<p>Confirm Account or copy an paste the URL below into your browser.</p>
+
+<p><%= link_to confirmation_url(@resource, :confirmation_token => @resource.confirmation_token), confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>

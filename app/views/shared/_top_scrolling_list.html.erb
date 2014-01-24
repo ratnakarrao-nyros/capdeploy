@@ -1,0 +1,19 @@
+<ul class="slidem">
+  <% lists.try(:each_slice, 4) do |array_list| %>
+    <div class="showcase-slide">
+       <% array_list.each do |list| %>
+          <li><a href="#" title="#" target="_blank"><%= image_tag "img1.gif" %></a>
+             <div class="listtitle">
+                <%= image_tag "icon1.png" %>
+                <h2><%= link_to list.name, users_list_path(list) %></h2>
+              </div>
+              <div class="listcontent">
+                <%= truncate(list.description, :length => 50) %>
+                <span>Date: <%= list.created_at.strftime('%b %e, %Y') %></span>
+                <%= link_to "Read More", users_list_path(list) %>
+              </div>
+           </li>
+         <% end %>
+      </div>
+   <% end %>
+</ul>

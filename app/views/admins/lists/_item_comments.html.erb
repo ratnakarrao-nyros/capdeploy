@@ -1,0 +1,37 @@
+<tr>
+  <td colspan="6">
+    <div class="accordion">
+      <div class="accordion-group">
+        <div class="accordion-heading">
+          <a class="accordion-toggle" data-toggle="collapse" href="#item_comments_<%= listing.id %>">
+            <i class="icon-plus"></i> Item Comments
+          </a>
+        </div>
+        <div id="item_comments_<%= listing.id %>" class="accordion-body collapse">
+          <div class="accordion-inner">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Comment ID</th>
+                  <th>User email</th>
+                  <th>Content</th>
+                  <th>Comment Votes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for comment in listing.comments %>
+                  <tr>
+                    <td><span class="badge"><%= comment.id %></span></td>
+                    <td><%= comment.user.email %></td>
+                    <td><%= comment.content %></td>
+                    <td><span class="badge badge-info"><%= comment.reputation_for(:comment_votes) %></span></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </td>
+</tr>

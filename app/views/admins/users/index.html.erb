@@ -1,0 +1,23 @@
+<% title "List of Users" %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "index_dataTables" %>
+<% end %>
+
+<table class="table table-bordered table-striped table-hover datatable" data-source="<%= admins_users_url(format: "json") %>">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Sign in count</th>
+      <th>Last sign in_at</th>
+      <th>Last sign in_ip</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+
+<div class="form-actions">
+  <%= link_to 'New user', new_admins_user_path, :class => 'btn btn-primary' %>
+</div>

@@ -1,0 +1,19 @@
+<h3>User details</h3>
+<table class="table">
+  <tr>
+    <td><b>Email</b></td>
+    <td><%= current_user.email %></td>
+  </tr>
+  <tr>
+    <td><b>Password</b></td>
+    <td>******</td>
+  </tr>
+  <tr>
+    <td><b>Created at</b></td>
+    <td><%= current_user.created_at.to_s(:long) %></td>
+  </tr>
+  <tr>
+    <td><b>Updated at</b></td>
+    <td><%= current_user.updated_at.to_s(:long) %></td>
+  </tr>
+</table>

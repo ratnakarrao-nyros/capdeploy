@@ -1,0 +1,191 @@
+<!-- head section -->
+<% content_for :head do %>
+  <%= stylesheet_link_tag 'lists/form.css' %>
+  <%= javascript_include_tag "jqBootstrapValidation" %>
+  <%= javascript_include_tag "plupload/plupload.full.js" %>
+  <%= javascript_include_tag "lists/lists.js", "lists/form.js" %>
+  <script type="text/javascript">
+    $(document).ready(function() {
+
+      var JSONlist = gon.list;
+
+      var viewModel = new ListViewModel(JSONlist);
+
+      ko.applyBindings(viewModel);
+      viewModel.initializeTooltip();
+
+      // initialize jqBootstrapValidation
+      $("input,textarea,select").not("[type=button]").jqBootstrapValidation({
+          preventSubmit: true,
+          filter: function() {
+              return $(this).is(":visible");
+          }
+      });
+
+      $.pnotify({
+        title: 'Before You Create a List...',
+        text: ' <ol> <li>Is your list original? Make sure you don\'t add a list that is already on <strong>TheTop5</strong>. Instead, you can reorder and add to the original list to create your own list by clicking the <strong>"Your List"</strong> tab on the list page.</li> <li>Is your list offensive? If so, it probably won\'t be approved.</li> <li>Does your list contain non-celebrities? Because of privacy concerns, we will not approve lists featuring people who we cannot readily find online using a Google search. Lists such as the hottest people in <strong>"your school"</strong> or worst athletes in <strong>"you neighborhood"</strong> will be deleted.</li> </ol>',
+        closer: true,
+        width: '33%',
+        sticker: false,
+        hide: false,
+        history: false
+      });
+
+    });
+  </script>
+<% end %>
+
+<div class="container-fluid" data-bind="with: list">
+  <div class="row-fluid">
+    <!--Sidebar content-->
+    <div class="span4">
+
+      <!-- user profile panel -->
+      <div class="well">
+        <ul class="nav nav-list">
+          <li class="nav-header">User Profile</li>
+          <li>
+            <% if current_user.profile.avatar.blank? %>
+              <%= image_tag current_user.gravatar_url(:size => 64), :class => "img-polaroid" %>
+            <% else %>
+              <%= image_tag current_user.profile.avatar_url(:thumb), :class => "img-polaroid" %>
+            <% end %>
+          </li>
+          <li></li>
+          <li><a href="<%= users_profile_path %>"><i class="icon-user"></i> <%= current_user.profile.full_name || current_user.email %> </a></li>
+          <li><a href="<%= users_lists_path(:criteria => :my_lists) %>"><i class="icon-list"></i> Total Created lists <span class="badge"><%= current_user.my_lists.count %></span></a></li>
+          <li><a href="<%= users_lists_path(:criteria => :my_approved_lists) %>"><i class="icon-ok"></i> Approved lists <span class="badge badge-success"><%= current_user.my_approved_lists.count %></span></a></li>
+          <li><a href="<%= users_lists_path(:criteria => :my_pending_lists) %>"><i class="icon-exclamation-sign"></i> Pending lists <span class="badge badge-important"><%= current_user.my_pending_lists.count %></span></a></li>
+          <li><a href="#"><i class="icon-star"></i> Current points <span class="badge badge-info"><%= current_user.reputation_for(:points) %></span></a></li>
+        </ul>
+      </div>
+
+      <!-- searching items panel -->
+      <div class="well">
+        <div class='lightbox-header'>
+          <button type="button" class="close" data-trigger="hover" data-placement="top" data-original-title="How to add item to your list?" data-content="You can search existing items by typing the item name, after that drag and drop to the list items panel on the right."><i class="icon-question-sign"></i></button>
+        </div>
+        <ul class="nav nav-list">
+          <li class="nav-header">Search Available Items</li>
+          <li>
+            <div class="input-prepend">
+              <span class="add-on"><i class="icon-search"></i></span>
+              <input type="search" id="search_item" class="span10" style="width:87%;" name="search_item" placeholder="Search by name" data-bind="value: $root.searchItemQuery, valueUpdate: 'keyup'" autocomplete="off" />
+            </div>
+          </li>
+          <li>
+            <ul class="items-list" data-bind="foreach: $root.searchItemResults">
+              <li>
+                <div data-bind="draggable: $data">
+                  <!-- ko if: image() != null -->
+                  <img data-bind="attr: { src: image }" class="image-pollaroid" height="32" width="32" />
+                  <!-- /ko -->
+                  <span data-bind="text: name"></span>
+                  <!-- ko if: description() != null && description() != '' -->
+                  <i class="icon-info-sign" data-bind="attr: { title: description }" data-trigger="hover" data-placement="bottom"></i>
+                  <!-- /ko -->
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+    <!--Body content-->
+    <div class="span8">
+
+      <div class="alert alert-info">
+        <strong><i>Estimated Points:</i> </strong>
+        <span class="badge badge-warning" data-bind="text: $root.estimatedPoints"></span>
+        <div class="progress level" data-trigger="hover" data-placement="bottom" data-bind="attr: { 'data-original-title': $root.levelOfCompleteness }">
+          <div class="bar" data-bind="style: { width: $root.levelOfCompleteness }"></div>
+        </div>
+      </div>
+
+      <!-- list info panel -->
+      <div class="well">
+        <ul class="nav nav-list">
+          <li class="nav-header">List info</li>
+          <li>
+            <div class="control-group">
+              <label class="control-label" for="list_name">Name</label>
+              <div class="controls">
+                <input type="text" id="list_name" name="list_name" class="input-xxlarge" size="50" placeholder="Name your list..." required="" data-validation-required-message="Please fill your list name" data-bind="value: name" aria-invalid="true"/>
+                <p class="help-block"></p>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="list_description">Description</label>
+              <div class="controls">
+                <textarea id="list_description" name="list_description" class="input-xxlarge" cols="40" rows="5" placeholder="Please provide a description of the list you are creating. (+5 Points)" data-bind="value: description"></textarea>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="list_category_id">Category</label>
+              <div class="controls">
+                <select id="list_category_id" name="list_category_id" min="1" data-validation-min-message="Please choose list category" data-bind="options: $root.availableCategories, value: category_id, optionsText: 'name', optionsValue: 'id'"></select>
+                <p class="help-block"></p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- list items panel -->
+      <div class="well">
+        <div class='lightbox-header'>
+          <button type="button" class="close" data-trigger="hover" data-placement="top" data-original-title="How to create an item?" data-content="You can add items to you list below. Click the add new button and add a minimum of five items. By completing all list fields you will earn more points!"><i class="icon-question-sign"></i></button>
+        </div>
+        <ul class="nav nav-list">
+          <li>
+            <button type="button" class="btn btn-mini btn-success pull-right" data-bind="click: $root.addNewItem" data-trigger="hover" data-placement="left" title="Add new empty item to the list"><i class="icon-plus-sign icon-white"></i> Add new item</button>
+          </li>
+          <li class="nav-header">Total number of items ( <span data-bind="text: listings_attributes().length"></span> )</li>
+          <li class="items">
+            <div data-bind="css: { dropzone: listings_attributes().length == 0 }, sortable: { data: listings_attributes, beforeMove: $root.verifyItem, dragged: $root.addItem, afterAdd: $root.addCallback, options: { placeholder: 'placeholder' } }">
+              <div class="media" data-bind="attr: {id: 'item_' + $index()}, style: { 'background-color': $root.itemBackgroundColor($data,$index()) }">
+                <span class="pull-left badge" data-bind="css: { 'badge-warning': $index() + 1 <= 5 }, text: $index() + 1"></span>
+                 <a class="pull-left thumbnail" data-bind="event: { click: $root.editImageItem }" data-trigger="hover" data-placement="right" title="Click here to add an image. (+10 points)">
+                 <!-- ko if: item_attributes().image() != null -->
+                   <img data-bind="attr: { src: item_attributes().image }" height="48" width="48" />
+                 <!-- /ko -->
+                 <!-- ko if: item_attributes().image() == null -->
+                   <%= image_tag "no-image.jpg", :size => "48x48" %>
+                 <!-- /ko -->
+                 </a>
+                <a class="pull-right btn btn-danger btn-mini" data-bind="click: $root.removeItem" data-trigger="hover" data-placement="bottom" title="Remove item"><i class="icon-remove-sign icon-white"></i></a>
+                <div class="media-body">
+                  <div class="control-group">
+                     <!-- ko if: item_attributes().id() == null -->
+                       <div class="controls">
+                         <input class="item_name" style="width:350px;" required="" data-validation-required-message="Please fill your item name" data-bind="value: item_attributes().name" placeholder="Type item name" type="text" aria-invalid="true" />
+                         <p class="help-block"></p>
+                       </div>
+                     <!-- /ko -->
+                     <!-- ko if: item_attributes().id() != null -->
+                       <span style="font-weight:bold;" data-bind="text: item_attributes().name"></span>
+                     <!-- /ko -->
+                  </div>
+                  <!-- item comment content -->
+                  <div class="controls">
+                    <textarea style="width:350px;" data-bind="value: comments_attributes()[0].content" placeholder="Type your initial comment (+5 points)" rows="2"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="form-actions">
+  <div class="pull-right">
+    <button type="button" id="myButton" class="btn btn-primary" data-loading-text="Loading..." data-bind="css: { disabled: $root.isListingsLessThanFive }, attr: { disabled: $root.isListingsLessThanFive }, click: $root.save">Save list</button>
+    <%= link_to 'Cancel', :back, :class => 'btn' %>
+  </div>
+</div>

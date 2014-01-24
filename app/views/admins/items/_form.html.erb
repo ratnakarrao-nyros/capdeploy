@@ -1,0 +1,42 @@
+<%- content_for :head do -%>
+  <%= stylesheet_link_tag 'jquery-wysiwyg.css' %>
+  <%= javascript_include_tag 'jquery-wysiwyg.js' %>
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('#item_description').wysihtml5();
+    });
+  </script>
+<%- end -%>
+
+<% content_for :sidebar do %>
+  <%= render "shared/error_messages", :target => @item %>
+<% end %>
+
+<%= simple_form_for [:admins, @item], :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.error_notification %>
+  <fieldset>
+    <%= f.input :name, :input_html => { :class => 'span7' } %>
+    <%= f.input :description, :input_html => { :class => 'span7', :rows => 20 } %>
+    <%= f.input :image %>
+    <%= f.input :image_cache, :as => :hidden %>
+    <!-- existing image -->
+    <% if @item.image? %>
+      <div class="control-group">
+        <label class="control-label">Existing image</label>
+        <div class="controls">
+          <%= image_tag(@item.image.thumb.url) %>
+        </div>
+      </div>
+      <%= f.input :remove_image, :as => :boolean, :label => 'Remove this image' %>
+    <% end %>
+  </fieldset>
+  <%= f.error :base %>
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn btn-primary' %>
+    <% unless @item.new_record? %>
+      <%= link_to "Cancel", admins_item_path(@item), :class => 'btn' %>
+    <% else %>
+      <%= link_to "Cancel", admins_items_path, :class => 'btn' %>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,32 @@
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <%= link_to configatron.site_name, root_url, :class => "brand" %>
+      <div class="nav-collapse">
+        <% if user_signed_in? %>
+          <p class="navbar-text pull-right">
+            Logged in as <%= link_to current_user.email, users_profile_path %>
+            or <%= link_to 'Log out', destroy_user_session_path, :method => :delete %>
+          </p>
+          <ul class="nav pull-right">
+            <li><%= link_to 'My Homepage', users_root_path %></li>
+            <li><%= link_to 'My Profile', users_profile_path %></li>
+            <li><%= link_to 'My List', users_lists_path %></li>
+            <li class="divider-vertical"></li>
+          </ul>
+        <% else %>
+          <ul class="nav pull-right">
+            <li><%= link_to 'Sign up', new_user_registration_path %></li>
+            <li class="divider-vertical"></li>
+            <li><%= link_to 'Sign in', new_user_session_path %></li>
+          </ul>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<% title raw "Comments for <i>#{@listing.item.name}</i> on <i>#{@listing.list.name}</i>" %>
+
+<table class="table table-condensed table-hover" data-bind="foreach: $root.list().listings_attributes()[0].comments_attributes">
+  <tr>
+    <td>
+      <blockquote>
+        <p data-bind="text: content"></p>
+        <p>
+          <i class="icon-user"></i> by <span data-bind="text: user_full_name"></span>
+          | <span class="label label-warning" data-bind="text: comment_votes"></span>
+          <a href="#" rel="tooltip" class="thumbs" data-bind="click: function(data, event) { $root.voteComment($root.list().listings_attributes()[0].id(), 'up', data, event) }" data-placement="top" data-original-title="thumbs up"><i class="icon-thumbs-up"></i></a>
+          <a href="#" rel="tooltip" class="thumbs" data-bind="click: function(data, event) { $root.voteComment($root.list().listings_attributes()[0].id(), 'down', data, event) }" data-placement="bottom" data-original-title="thumbs down"><i class="icon-thumbs-down"></i></a>
+        </p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+
+<!-- bottom section -->
+<% content_for :bottom do %>
+  <%= javascript_include_tag 'lists/lists.js', 'lists/show.js' %>
+  <script type="text/javascript">
+    $(document).ready(function() {
+
+        var JSONlist = gon.list;
+
+        var viewModel = new ListViewModel(JSONlist);
+
+        ko.applyBindings(viewModel);
+
+        $(".thumbs").tooltip();
+    });
+  </script>
+<% end %>

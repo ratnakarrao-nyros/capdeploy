@@ -1,0 +1,40 @@
+<ul class="accorditioned">
+  <% list_criterias.select { |c| [:newest_lists, :popular_lists].include? c.name.to_sym }.each do |list_criteria| %>
+    <li class="unactiveli prvi">
+    <a href="#"><%= list_criteria.name.titleize %></a>
+    </li>
+    <div>
+      <ul>
+        <% list_criteria.try(:take, 5).each do |list| %>
+          <li><%= link_to list.name, users_list_path(list) %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <article>Create your own lists, items or comments:
+  <span id="login_buttons">
+    <%= render :partial => "shared/login_buttons" %>
+  </span>
+  </article>
+</ul>
+
+<% content_for :bottom do %>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      (function($) {
+        var allPanels = $('.accorditioned > div').hide();
+        $('.accorditioned > div:first').show();
+        $('.accorditioned > li:first').removeClass("unactiveli").addClass("activeli");
+        $('.accorditioned > li > a').click(function() {
+          allPanels.slideUp();
+          $('.accorditioned li').removeClass("activeli").addClass("unactiveli");
+          $(this).parent().next().slideDown();
+          if($(this).parent().hasClass("unactiveli")){
+            $(this).parent().removeClass("unactiveli").addClass("activeli");
+          }
+          return false;
+        });
+      })(jQuery);
+    });
+	</script>
+<% end %>

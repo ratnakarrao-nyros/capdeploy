@@ -1,0 +1,69 @@
+<% title "Edit #{@setting.name}" %>
+
+<% content_for :sidebar do %>
+  <%= render "shared/error_messages", :target => @setting %>
+<% end %>
+
+<%= simple_form_for [:admins, @setting], :method => :put, :url => admins_settings_path do |f| %>
+  <%= f.error_notification %>
+  <fieldset>
+    <%= f.input :preferences, :as => :hidden, :input_html => { "data-bind" => "value: ko.toJSON($root.preferences)" } %>
+    <table class="table table-striped table-bordered table-condensed">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+       <!-- THIS IS JUST A TEMPORARY SOLUTION -->
+       <!-- ko foreach: $root.preferences.preferences -->
+         <!-- ko if: $data.key() != "top_scrolling_list"  -->
+          <tr>
+            <td><span data-bind="text: key"></span></td>
+            <td><input data-bind="value: value" /></td>
+          </tr>
+         <!-- /ko -->
+         <!-- ko if: $data.key() == "top_scrolling_list"  -->
+          <tr>
+            <td><span data-bind="text: key"></span></td>
+            <td><select data-bind="options: ko.observableArray(<%= ListCriteria.all.map { |l| l.name } %>), value: value"></select></td>
+          </tr>
+         <!-- /ko -->
+       <!-- /ko -->
+      </tbody>
+    </table>
+  </fieldset>
+  <%= f.error :base %>
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn btn-primary' %>
+    <%= link_to "Cancel", admins_settings_path, :class => 'btn' %>
+  </div>
+<% end %>
+
+<!-- bottom section -->
+<% content_for :bottom do %>
+  <%= javascript_include_tag 'jquery-tmpl', 'settings.js' %>
+  <script type="text/javascript">
+    $(document).ready(function() {
+
+      // http://jsfiddle.net/rniemeyer/AHNw4/
+      // could map this manually,
+      // but if we have other things being taken care of by the mapping plugin,
+      // then might as well use it for the dictionary too
+      var mapping = {
+          preferences: {
+              create: function(options) {
+                  return new SettingViewModel(options.data);
+              }
+          }
+      };
+
+      var viewModel = ko.mapping.fromJS(gon.setting_preferences, mapping);
+
+      ko.applyBindings(viewModel);
+
+    });
+  </script>
+<% end %>
+

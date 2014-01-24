@@ -1,0 +1,39 @@
+<% title "Display item [ #{@item.name} ]" %>
+
+<h3>Item details</h3>
+<table class="table">
+  <tr>
+    <td><b>ID</b></td>
+    <td><%= @item.id %></td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td><%= @item.name %></td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td><%= raw @item.description %></td>
+  </tr>
+  <tr>
+    <td><b>Image</b></td>
+    <td><%= image_tag(@item.image.thumb.url) if @item.image? %></td>
+  </tr>
+  <tr>
+    <td><b>Image path</b></td>
+    <td><%= @item.image %></td>
+  </tr>
+  <tr>
+    <td><b>Created at</b></td>
+    <td><%= @item.created_at.to_s(:long) %></td>
+  </tr>
+  <tr>
+    <td><b>Updated at</b></td>
+    <td><%= @item.updated_at.to_s(:long) %></td>
+  </tr>
+</table>
+
+<div class="form-actions">
+  <%= link_to 'Edit', edit_admins_item_path(@item), :class => 'btn btn-warning' %>
+  <%= link_to 'Delete', admins_item_path(@item), :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger' %>
+  <%= link_to 'View All', admins_items_path, :class => 'btn' %>
+</div>

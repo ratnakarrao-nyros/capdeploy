@@ -1,0 +1,52 @@
+<div id="category_list">
+</div>
+
+<p>
+Choose some categories you'd like to view:
+<%= select_tag(:category, options_for_select(Category.all.map {|category| [category.name, category.id]})) %>
+</p>
+
+<% content_for :bottom do %>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+
+          var category_id = $("#category").val();
+
+          $.read(
+            '/api/filter_by_category',
+            { category_id: category_id },
+            function (data) {
+              $("#category_list").html(data.content);
+              jQuery(".slidem").awShowcase({
+                content_width: 680,
+                content_height: 300,
+                arrows: true,
+                buttons: false
+              });
+            }
+          );
+
+        // perform an AJAX get, the trailing function is what happens on successful get.
+        $("#category").change(function() {
+
+          var category_id = $("#category").val();
+
+          $.read(
+            '/api/filter_by_category',
+            { category_id: category_id },
+            function (data) {
+              $("#category_list").html(data.content);
+              jQuery(".slidem").awShowcase({
+                content_width: 680,
+                content_height: 300,
+                arrows: true,
+                buttons: false
+              });
+            }
+          );
+
+        });
+
+    });
+  </script>
+<% end %>

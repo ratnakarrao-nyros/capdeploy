@@ -1,0 +1,44 @@
+<% content_for :sidebar do %>
+  <%= render "shared/error_messages", :target => @user %>
+<% end %>
+
+<%= simple_form_for [:admins, @user], :html => { :class => 'form-horizontal', :multipart => true } do |f| %>
+  <fieldset>
+    <legend>User information</legend>
+    <%= f.input :email %>
+    <%= f.input :password %>
+    <%= f.input :password_confirmation %>
+    <legend>User profile</legend>
+    <%= f.simple_fields_for :profile do |p| %>
+      <%= p.input :avatar %>
+      <%= p.input :avatar_cache, :as => :hidden %>
+      <!-- existing image -->
+      <% if @user.profile.avatar? %>
+        <div class="control-group">
+          <label class="control-label">Avatar image</label>
+          <div class="controls">
+            <%= image_tag(@user.profile.avatar.thumb.url) %>
+          </div>
+        </div>
+        <%= p.input :remove_avatar, :as => :boolean, :label => 'Remove this avatar' %>
+      <% end %>
+      <%= p.input :first_name %>
+      <%= p.input :last_name %>
+      <%= p.input :birthday, as: :date, start_year: 1900,
+                        end_year: Date.today.year - 5,
+                        order: [:day, :month, :year] %>
+      <%= p.input :sex, collection: [['Male', true], ['Female', false]], label: "Gender", include_blank: 'Select your gender' %>
+      <%= p.input :city %>
+      <%= p.input :state, collection: Faker::AddressUS::STATE, prompt: "Select your state" %>
+      <%= p.input :website %>
+    <% end %>
+  </fieldset>
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn btn-primary' %>
+    <% if @user.new_record? %>
+    <%= link_to "Cancel", admins_users_path(@user), :class => 'btn' %>
+    <% else %>
+    <%= link_to "Cancel", admins_user_path, :class => 'btn' %>
+    <% end %>
+  </div>
+<% end %>

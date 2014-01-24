@@ -1,0 +1,19 @@
+<%= flash_notify %>
+<%= simple_form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post, :id => "modal_auth_forgot_password" }, :remote => true) do |f| %>
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Resend confirmation instructions</h3>
+  </div>
+  <div class="row-fluid modal-body">
+    <div class="span6">
+      <%= f.input :email, :required => false, :label => false, :placeholder => "Email address" %>
+    </div>
+    <div class="span5">
+      <%= render "shared/users_devise_links" %>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <%= f.button :submit, "Resend", :class => "btn-primary" %>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+<% end %>

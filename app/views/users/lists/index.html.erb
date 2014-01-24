@@ -1,0 +1,61 @@
+<% params[:criteria] ? title(params[:criteria].titleize) : title("All Lists") %>
+
+<% content_for :head do %>
+  <%= stylesheet_link_tag "dataTables/jquery.dataTables.bootstrap" %>
+  <style type="text/css">
+    span.filterMatches { color: red }
+  </style>
+  <%= javascript_include_tag "dataTables/jquery.dataTables", "jquery.dataTables.bootstrap", "jquery.dataTables.highlight" %>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      oTable = $('.datatable').dataTable({
+        "sDom": "<'row-fluid'<'span6'><'span6'f>r>t",
+        "sPaginationType": "bootstrap",
+        "bJQueryUI": false,
+        "bProcessing": true,
+        "bServerSide": true,
+        "sPageFirst": "first",
+        "oLanguage": { "sSearch": "" },
+        "sAjaxSource": $('.datatable').data('source'),
+        "fnServerParams": function(aoData) {
+           aoData.push( { "name": 'category', "value": $('#categoryhid').val() } );
+        }
+      }).fnSearchHighlighting();
+
+      $("a.category").on("click", function(e) {
+        // fill the hidden field with category id
+        $('#categoryhid').val(this.id);
+        // trigger the fnFilter
+        oTable.fnFilter("");
+        e.preventDefault();
+      });
+
+      $('.dataTables_filter').addClass('input-prepend');
+      $('.dataTables_filter').css('float','right');
+      $('.dataTables_filter input').before('<span class="add-on"><i class="icon-search"></i></span>');
+      $('.dataTables_filter input').attr("placeholder", "Search...");
+    });
+  </script>
+<% end %>
+
+  <input type="hidden" id="categoryhid" value="" />
+
+  <div class="alert alert-info">
+    <a class="close category" data-dismiss="alert" href="#" id="">&times;</a>
+    <strong>Filter By Category : </strong>
+    <%= link_to "All", "#", :class => "category", :style => "margin:4px;", :id => "" %>
+    <% Category.all.each do |category| %>
+      <%= link_to category.name, "#", :class => "category", :style => "margin:4px;", :id => category.id %>
+    <% end %>
+  </div>
+
+<table class="table table-bordered table-striped table-hover datatable" data-source="<%= users_lists_url(criteria: params[:criteria], format: "json") %>">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>

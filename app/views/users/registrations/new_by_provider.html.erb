@@ -1,0 +1,10 @@
+<h2><%= "Sign up using #{params[:provider].to_s.titleize}"%></h2>
+
+<%= form_for(resource, :as => resource_name, :url => user_registration_by_provider_path, :method => :post) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div><%= f.label :email %><br />
+  <%= f.email_field :email %></div>
+
+  <div><%= f.submit "Add my email address" %></div>
+<% end %>

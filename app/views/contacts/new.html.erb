@@ -1,0 +1,22 @@
+<% title "Contact Us" %>
+
+<% content_for :sidebar do %>
+  <%= render "shared/error_messages", :target => @contact %>
+<% end %>
+
+<div class="well">
+  Have comments or suggestions on how we can improve TheTop5.com?
+  We'd love to hear from you! Let us know what's on your mind and we'll try to get back
+  to you as soon as possible.
+</div>
+
+<%= simple_form_for @contact do |f| %>
+  <%= f.error_notification %>
+  <fieldset>
+    <%= f.input :email %>
+    <%= f.input :content, :label => "Message", :input_html => { :class => 'span5', :rows => "10" } %>
+  </fieldset>
+  <div class="form-actions">
+    <%= f.submit "Send message", :class => 'btn btn-primary' %>
+  </div>
+<% end %>

@@ -1,0 +1,35 @@
+<h3>Profile details</h3>
+<table class="table">
+  <tr>
+    <td><b>Current Points</b></td>
+    <td><span class="badge badge-important"><%= blank_or_not current_user.reputation_for(:points) %></span></td>
+  </tr>
+  <tr>
+    <td><b>First Name</b></td>
+    <td><%= blank_or_not current_user.profile.first_name %></td>
+  </tr>
+  <tr>
+    <td><b>Last Name</b></td>
+    <td><%= blank_or_not current_user.profile.last_name %></td>
+  </tr>
+  <tr>
+    <td><b>Birthday</b></td>
+    <td><%= blank_or_not current_user.profile.birthday.strftime('%b %e, %Y') unless current_user.profile.birthday.nil? %></td>
+  </tr>
+  <tr>
+    <td><b>Gender</b></td>
+    <td><%= current_user.profile.sex.nil? ? "-" : current_user.profile.sex? ? "Male" : "Female" %></td>
+  </tr>
+  <tr>
+    <td><b>City</b></td>
+    <td><%= blank_or_not current_user.profile.city %></td>
+  </tr>
+  <tr>
+    <td><b>State</b></td>
+    <td><%= blank_or_not current_user.profile.state %></td>
+  </tr>
+  <tr>
+    <td><b>Website</b></td>
+    <td><%= blank_or_not(current_user.profile.website) { link_to current_user.profile.website, current_user.profile.website } %></td>
+  </tr>
+</table>

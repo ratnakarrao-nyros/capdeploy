@@ -1,0 +1,21 @@
+<% content_for :sidebar do %>
+  <%= render "shared/error_messages", :target => @admin %>
+<% end %>
+
+<%= simple_form_for [:admins, @admin], :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.error_notification %>
+  <fieldset>
+    <%= f.input :email %>
+    <%= f.input :password %>
+    <%= f.input :password_confirmation %>
+  </fieldset>
+  <%= f.error :base %>
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn btn-primary' %>
+    <% unless @admin.new_record? %>
+    <%= link_to "Cancel", admins_admin_path(@admin), :class => 'btn' %>
+    <% else %>
+    <%= link_to "Cancel", admins_admins_path, :class => 'btn' %>
+    <% end %>
+  </div>
+<% end %>

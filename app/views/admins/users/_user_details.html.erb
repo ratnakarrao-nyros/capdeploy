@@ -1,0 +1,77 @@
+<table class="table">
+  <tr>
+    <td><b>ID</b></td>
+    <td><%= @user.id %></td>
+  </tr>
+  <tr>
+    <td><b>Email</b></td>
+    <td><%= @user.email %></td>
+  </tr>
+  <tr>
+    <td><b>Password</b></td>
+    <td>******</td>
+  </tr>
+  <% unless @user.reset_password_sent_at.blank? %>
+  <tr>
+    <td><b>Reset password sent at</b></td>
+    <td><%= @user.reset_password_sent_at.to_s(:long) %></td>
+  </tr>
+  <tr>
+    <td><b>Reset password token</b></td>
+    <td><%= @user.reset_password_token %></td>
+  </tr>
+  <% end %>
+  <% unless @user.confirmed? %>
+  <tr>
+    <td><b>Confirmation sent at</b></td>
+    <td><%= @user.confirmation_sent_at.to_s(:long) %></td>
+  </tr>
+  <tr>
+    <td><b>Confirmation token</b></td>
+    <td><%= @user.confirmation_token %></td>
+  </tr>
+  <% else %>
+  <tr>
+    <td><b>Confirmed at</b></td>
+    <td><%= @user.confirmed_at.to_s(:long) %></td>
+  </tr>
+  <% end %>
+  <% unless @user.remember_created_at.blank? %>
+  <tr>
+    <td><b>Remember created at</b></td>
+    <td><%= @user.remember_created_at.to_s(:long) %></td>
+  </tr>
+  <% end %>
+  <tr>
+    <td><b>Sign in count</b></td>
+    <td><%= @user.sign_in_count %></td>
+  </tr>
+  <% unless @user.current_sign_in_at.blank? %>
+  <tr>
+    <td><b>Current sign in at</b></td>
+    <td><%= @user.current_sign_in_at.to_s(:long) %></td>
+  </tr>
+  <tr>
+    <td><b>Current sign in ip</b></td>
+    <td><%= @user.current_sign_in_ip %></td>
+  </tr>
+  <% end %>
+  <% unless @user.last_sign_in_at.blank? %>
+  <tr>
+    <td><b>Last sign in at</b></td>
+    <td><%= @user.last_sign_in_at.to_s(:long) %></td>
+  </tr>
+  <tr>
+    <td><b>Last sign in ip</b></td>
+    <td><%= @user.last_sign_in_ip %></td>
+  </tr>
+  <% end %>
+  <tr>
+    <td><b>Created at</b></td>
+    <td><%= @user.created_at.to_s(:long) %></td>
+  </tr>
+  <tr>
+    <td><b>Updated at</b></td>
+    <td><%= @user.updated_at.to_s(:long) %></td>
+  </tr>
+</table>

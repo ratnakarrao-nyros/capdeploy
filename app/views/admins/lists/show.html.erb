@@ -1,0 +1,61 @@
+<% title "Display list [ #{@list.name} ]" %>
+
+<h3>List details</h3>
+<table class="table">
+  <tr>
+    <td><b>ID</b></td>
+    <td><span class="badge"><%= @list.id %></span></td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td><%= @list.name %></td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td><%= @list.description %></td>
+  </tr>
+  <%= render 'list_items' unless @list.listings.empty? %>
+  <tr>
+    <td><b>Total Votes</b></td>
+    <td>
+      <span class="badge badge-info"><%= @list.total_listings_votes %></span>
+    </td>
+  </tr>
+  <tr>
+    <td><b>Number of Items</b></td>
+    <td>
+      <span class="badge badge-info"><%= @list.listings.count %></span>
+    </td>
+  </tr>
+  <tr>
+    <td><b>Number of Comments</b></td>
+    <td>
+      should get the comments from fb:comments
+    </td>
+  </tr>
+  <tr>
+    <td><b>Created at</b></td>
+    <td><%= @list.created_at.to_s(:long) %></td>
+  </tr>
+  <tr>
+    <td><b>Updated at</b></td>
+    <td><%= @list.updated_at.to_s(:long) %></td>
+  </tr>
+</table>
+
+
+<div class="form-actions">
+  <%= link_to 'Edit', edit_admins_list_path(@list), :class => 'btn btn-warning' %>
+  <%= link_to 'Delete', admins_list_path(@list), :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger' %>
+  <%= link_to 'View All', admins_lists_path, :class => 'btn' %>
+</div>
+
+<% content_for :bottom do %>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      $(".accordion").on("show hide", function(e) {
+        return $(e.target).siblings(".accordion-heading").find(".accordion-toggle i").toggleClass("icon-minus icon-plus");
+      });
+    });
+  </script>
+<% end %>

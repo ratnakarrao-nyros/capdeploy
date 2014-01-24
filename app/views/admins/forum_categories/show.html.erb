@@ -1,0 +1,35 @@
+<% title "Display item [ #{@forum_category.title} ]" %>
+
+<h3>Category details</h3>
+<table class="table">
+  <tr>
+    <td><b>ID</b></td>
+    <td><%= @forum_category.id %></td>
+  </tr>
+  <tr>
+    <td><b>Title</b></td>
+    <td><%= @forum_category.title %></td>
+  </tr>
+  <tr>
+    <td><b>State</b></td>
+    <td><%= @forum_category.state %></td>
+  </tr>
+  <tr>
+    <td><b>Position</b></td>
+    <td><%= @forum_category.position %></td>
+  </tr>
+  <tr>
+    <td><b>Created at</b></td>
+    <td><%= @forum_category.created_at.to_s(:long) %></td>
+  </tr>
+  <tr>
+    <td><b>Updated at</b></td>
+    <td><%= @forum_category.updated_at.to_s(:long) %></td>
+  </tr>
+</table>
+
+<div class="form-actions">
+  <%= link_to 'Edit', edit_admins_forum_category_path(@forum_category), :class => 'btn btn-warning' %>
+  <%= link_to 'Delete', admins_forum_category_path(@forum_category), :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger' %>
+  <%= link_to 'View All', admins_forum_categories_path, :class => 'btn' %>
+</div>

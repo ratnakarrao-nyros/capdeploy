@@ -1,0 +1,28 @@
+<% title "Message from #{@contact.email}" %>
+
+<h3>Contact Details</h3>
+<table class="table">
+  <tr>
+    <td><b>ID</b></td>
+    <td>
+      <%= @contact.id %>
+    </td>
+  </tr>
+  <tr>
+    <td><b>Email</b></td>
+    <td>
+      <%= @contact.email %>
+    </td>
+  </tr>
+  <tr>
+    <td><b>Message</b></td>
+    <td>
+      <%= raw(simple_format(h(@contact.content))) %>
+    </td>
+  </tr>
+</table>
+
+<div class="form-actions">
+  <%= link_to 'Delete', admins_contact_path(@contact), :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger' %>
+  <%= link_to 'View All', admins_contacts_path, :class => 'btn' %>
+</div>

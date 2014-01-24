@@ -1,0 +1,23 @@
+<%= simple_form_for [:admins, @admin], :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3><%= "Change #{@field}" %></h3>
+  </div>
+  <div class="modal-body">
+    <%= f.error_notification %>
+    <fieldset>
+      <%- case @field -%>
+      <%- when "email" -%>
+      <%= f.input :email %>
+      <%- when "password" -%>
+      <%= f.input :password %>
+      <%= f.input :password_confirmation %>
+      <%- end -%>
+      <%= f.input :field, :as => :hidden, :input_html => { :value => @field } %>
+    </fieldset>
+  </div>
+  <div class="modal-footer">
+    <%= f.button :submit, :class => "btn btn-primary" %>
+    <a href="#" class="btn" data-dismiss="modal">Close</a>
+  </div>
+<% end %>

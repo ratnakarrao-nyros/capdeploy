@@ -1,0 +1,24 @@
+<% content_for :sidebar do %>
+  <div class="well sidebar-nav">
+    <ul class="nav nav-list">
+      <li class="nav-header">Profile</li>
+      <li>
+        <p>
+          <% if current_user.profile.avatar.blank? %>
+            <%= image_tag current_user.gravatar_url(:size => 64), :class => "image-polaroid" %>
+          <% else %>
+            <%= image_tag current_user.profile.avatar_url(:thumb), :class => "image-polaroid" %>
+          <% end %>
+        </p>
+      </li>
+      <li><%= link_to "Edit profile", edit_users_profile_path %></li>
+      <li><%= link_to "My Lists (#{current_user.my_lists.count})", users_lists_path(:criteria => :my_lists) %></li>
+      <li><%= link_to "My Favorite Lists (#{current_user.my_favorite_lists.count})", users_lists_path(:criteria => :my_favorite_lists) %></li>
+      <li><%= link_to "Change my email", edit_users_user_path(:field => :email), :remote => true %></li>
+      <li><%= link_to "Change my password", edit_users_user_path(:field => :password), :remote => true %></li>
+      <li><%= link_to 'Change my avatar', edit_users_profile_path, :remote => true %></li>
+      <li><%= link_to "Close my account", users_user_path, :method => :delete, :confirm => "Are you sure you want to schedule your account for deletion? All data linked to your account on #{configatron.site_name} will be removed from our systems.\n\nTHIS ACTION CANNOT BE UNDONE!\n\nThanks for using #{configatron.site_name}. We hope to see you again soon!"%></li>
+      <li><%= link_to 'Log Out', destroy_user_session_path, :method => :delete %></li>
+    </ul>
+  </div>
+<% end %>

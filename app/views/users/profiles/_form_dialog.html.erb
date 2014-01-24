@@ -1,0 +1,22 @@
+<%= simple_form_for [:users, @profile], :html => { :class => 'form-horizontal', :url => users_profile_path, :method => :put, :multipart => true }, :remote => true do |f| %>
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3><%= "Change Avatar" %></h3>
+  </div>
+  <div class="modal-body">
+    <% unless @profile.avatar.blank? %>
+      <div class="control-group">
+        <label class="control-label">Avatar image</label>
+        <div class="controls">
+          <%= image_tag @profile.avatar_url(:thumb) %>
+        </div>
+      </div>
+    <% end %>
+    <%= f.input :avatar %>
+    <%= f.input :avatar_cache, :as => :hidden %>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Change Avatar", :class => "btn btn-primary" %>
+    <a href="#" class="btn" data-dismiss="modal">Close</a>
+  </div>
+<% end %>

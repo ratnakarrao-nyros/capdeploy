@@ -1,0 +1,98 @@
+<h1>Featured Top Ten Lists</h1>		
+<div id="amazon_scroller1" class="amazon_scroller">
+   <div class="amazon_scroller_mask">
+        <% if app_settings.try(:top_scrolling_list).try(:to_sym).eql?(:list_type) %>
+          <%= render 'shared/category_list' %>
+        <% else %>
+          <%= render 'shared/top_scrolling_list', :lists => list_criterias(app_settings.try(:top_scrolling_list).try(:to_sym)) %>
+        <% end %>
+            <ul class="amazon_scroller_nav">
+                <li></li>
+                <li></li>
+          </ul>
+          <div style="clear: both"></div>
+    </div>
+ </div>
+<br/><br/>
+
+<h1>The Most Popular</h1>	
+<div id="amazon_scroller3" class="amazon_scroller">
+  <div class="amazon_scroller_mask">
+          <ul class="slidem2">
+              <% list_criterias(:popular_lists).try(:each_slice, 4) do |array_list| %>
+                <div class="showcase-slide">
+                  <% array_list.each do |list| %>
+                    <li><%= image_tag "img2.gif" %>
+                        <div class="listtitle">
+                          <%= image_tag "icon1.png" %>
+                          <h2><%= link_to list.name, users_list_path(list) %></h2>
+                        </div>
+                        <div class="listcontent">
+                          <%= truncate(list.description, :length => 50) %>
+                          <%- if list.has_attribute?(:created_at) -%>
+                          <span>Date: <%= list.created_at.strftime('%b %e, %Y') %></span>
+                          <%- end -%>
+                          <%= link_to "Read More", users_list_path(list) %>
+                        </div>
+                    </li>
+                  <% end %>
+                </div>
+              <% end %>
+        </ul>
+  </div>
+</div>
+
+
+
+<div class="testimonial">
+  <div class="showcase-slide">
+    <div class="sinner">
+      <h3> <font style="color:#3d5ca1;">The Top 5</font>  Can't find a list? Be the first to create one!</h3>
+      <span>From the best fast food restaurants to the best ways to lose weight after you eat at them...</span>
+    </div>
+  </div>
+
+  <div class="showcase-slide">
+    <div class="sinner">
+      <h3> <font style="color:#3d5ca1;">The Top 5</font>  Something else here</h3>
+      <span>From the best fast food restaurants to the best ways to lose weight after you eat at them...</span>
+    </div>
+  </div>
+
+  <div class="showcase-slide">
+    <div class="sinner">
+      <h3> <font style="color:#3d5ca1;">The Top 5</font>  Third slide</h3>
+      <span>From the best fast food restaurants to the best ways to lose weight after you eat at them...</span>
+    </div>
+  </div>
+</div>
+
+
+
+<% content_for :bottom do %>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+        // list items slider
+        jQuery(".slidem").awShowcase({
+          content_width: 680,
+          content_height: 300,
+          arrows: true,
+          buttons: false
+        });
+
+        jQuery(".slidem2").awShowcase({
+          content_width: 680,
+          content_height: 300,
+          arrows: true,
+          buttons: false
+        });
+
+        jQuery(".testimonial").awShowcase({
+          content_width: 630,
+          content_height: 112,
+          arrows: false,
+          buttons: true
+        });
+    });
+  </script>
+<% end %>

@@ -1,0 +1,14 @@
+$('#modal-form').html('<%= escape_javascript(render :partial => "form_dialog") %>');
+$('#modal-form').modal('show');
+$("#myButton").removeAttr('disabled');
+$('#myButton').click(function() {
+   $(this).attr('disabled',true);
+   ajaxLoaderPnotify.start();
+   $(this).parents('form:first').submit();
+});
+<%- if flash[:notice] -%>
+ajaxLoaderPnotify.stop({text: '<%= flash[:notice] %>'});
+<%- else -%>
+ajaxLoaderPnotify.stop({display: false});
+<%- end -%>
+
